@@ -1,0 +1,9 @@
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\bin\Debug\File Transfer.exe.config
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\bin\Debug\File Transfer.exe
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\bin\Debug\File Transfer.pdb
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\obj\Debug\File Transfer.csprojResolveAssemblyReference.cache
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\obj\Debug\File_Transfer.mainForm.resources
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\obj\Debug\File_Transfer.Properties.Resources.resources
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\obj\Debug\File Transfer.csproj.GenerateResource.Cache
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\obj\Debug\File Transfer.exe
+F:\4th Year, 1st Term\Computer Networks\LAB\File Transfer\File Transfer\obj\Debug\File Transfer.pdb
