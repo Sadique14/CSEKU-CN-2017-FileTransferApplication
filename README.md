@@ -1,7 +1,7 @@
 # CSEKU-CN-2017-FileTransferApplication
 Computer Networks Project - Khulna University
 
-This software can be using for transfering files among several computers.
+Usage: Transfering files among several computers.
 
 Features:
 1. User can see the list of computers connected with the same local area network.
