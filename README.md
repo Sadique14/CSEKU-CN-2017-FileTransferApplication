@@ -1,5 +1,5 @@
 # CSEKU-CN-2017-FileTransferApplication
-md.farhansadique14@gmail.com
+Youtube video link: https://youtu.be/teqOJX68HIM
 
 Computer Networks Project - Khulna University
 
