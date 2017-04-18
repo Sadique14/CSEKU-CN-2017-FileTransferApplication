@@ -27,6 +27,7 @@ namespace File_Transfer
         Socket socketForClient;
         private Thread serverThread;
         private Thread findPC;
+        private Thread notification;
         int flag = 0;
         string fileName = "";
         private bool serverRunning = false;
@@ -35,6 +36,11 @@ namespace File_Transfer
         int y = 308;
         int fileReceived = 0;
         string savePath;
+        string senderIP;
+        string senderMachineName;
+        string targetIP;
+        string targetName;
+        NotificationForm f2;
 
         private void mainForm_Load(object sender, EventArgs e)
         {
@@ -81,7 +87,9 @@ namespace File_Transfer
                     client = listener.AcceptTcpClient();
                     Invoke((MethodInvoker)delegate
                     {
-                        fileNotificationLabel.Text = "Please don't do other tasks. File Coming...";
+                        notificationPanel.Visible = true;
+                        notificationTempLabel.Text = "File coming..."+"\n"+fileName+"\n"+"From: " + senderIP + " " + senderMachineName;
+                        fileNotificationLabel.Text = "File Coming from "+senderIP+" "+senderMachineName;
                     });
                     isConnected = true;
                     NetworkStream stream = client.GetStream();
@@ -104,6 +112,8 @@ namespace File_Transfer
                             fileName = "";
                             Invoke((MethodInvoker)delegate
                             {
+                                notificationTempLabel.Text = "";
+                                notificationPanel.Visible = false;
                                 fileNotificationLabel.Text = "";
                             });
                             fileReceived = 1;
@@ -119,16 +129,19 @@ namespace File_Transfer
                         {
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         }
-                        fileName = data;
+                        string[] msg = data.Split('@');
+                        fileName = msg[0];
+                        senderIP = msg[1];
+                        senderMachineName = msg[2];
                         client.Close();
                         isConnected = false;
                         flag = 1;
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
                 flag = 0;
                 isConnected = false;
                 if (client != null)
@@ -195,6 +208,11 @@ namespace File_Transfer
             }
             else
             {
+                Invoke((MethodInvoker)delegate
+                {
+                    notificationLabel.ForeColor = Color.Red;
+                    notificationLabel.Text = "Application is Offline";
+                });
                 MessageBox.Show("Not connected to LAN");
             }
         }
@@ -239,14 +257,14 @@ namespace File_Transfer
         //for sending file
         private void sendFileButton_Click(object sender, EventArgs e)
         {
-            String targetIP = null;
-            String targetName = null;
+            targetIP = null;
+            targetName = null;
             if ((onlinePCList.SelectedIndices.Count > 0 || ipBox.Text != "") && serverRunning && fileNameLabel.Text != ".")
             {
                 if (ipBox.Text != "")
                 {
                     targetIP = ipBox.Text;
-                    targetName = "null";
+                    targetName = "";
                 }
                 else
                 {
@@ -255,26 +273,49 @@ namespace File_Transfer
                 }
                 try
                 {
-                    fileNotificationLabel.Text = "Please don't do other tasks. File sending to " + targetIP + " " + targetName + "...";
-                    //closing the server
-                    listener.Stop();
-                    serverThread.Abort();
-                    serverThread.Join();
-                    serverRunning = false;
-                    //now making this program a client
-                    socketForClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    socketForClient.Connect(new IPEndPoint(IPAddress.Parse(targetIP), 11000));
-                    string fileName = fileNameLabel.Tag.ToString();
-                    byte[] fileNameData = Encoding.Default.GetBytes(fileName);
-                    socketForClient.Send(fileNameData);
-                    socketForClient.Shutdown(SocketShutdown.Both);
-                    socketForClient.Close();
-                    socketForClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    socketForClient.Connect(new IPEndPoint(IPAddress.Parse(targetIP), 11000));
-                    socketForClient.SendFile(fileNameLabel.Text);
-                    socketForClient.Shutdown(SocketShutdown.Both);
-                    socketForClient.Close();
-                    MessageBox.Show("File sent to " + targetIP + " " + targetName, "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Ping p = new Ping();
+                    PingReply r;
+                    r = p.Send(targetIP);
+                    if (!(r.Status == IPStatus.Success))
+                    {
+                        MessageBox.Show("Target computer is not available.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        notification = new Thread(new ThreadStart(showNotification));
+                        notification.Start();
+                        //notificationPanel.Visible = true;
+                        //notificationTempLabel.Text = "File sending to " + targetIP + " " + targetName + "...";
+                        fileNotificationLabel.Text = "Please don't do other tasks. File sending to " + targetIP + " " + targetName + "...";
+                        //closing the server
+                        listener.Stop();
+                        serverThread.Abort();
+                        serverThread.Join();
+                        serverRunning = false;
+                        //now making this program a client
+                        socketForClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        socketForClient.Connect(new IPEndPoint(IPAddress.Parse(targetIP), 11000));
+                        string fileName = fileNameLabel.Tag.ToString();
+                        //long fileSize = new FileInfo(fileNameLabel.Text).Length;
+                        byte[] fileNameData = Encoding.Default.GetBytes(fileName + "@" + this.IP + "@" + Environment.MachineName);
+                        socketForClient.Send(fileNameData);
+                        socketForClient.Shutdown(SocketShutdown.Both);
+                        socketForClient.Close();
+                        socketForClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        socketForClient.Connect(new IPEndPoint(IPAddress.Parse(targetIP), 11000));
+                        socketForClient.SendFile(fileNameLabel.Text);
+                        socketForClient.Shutdown(SocketShutdown.Both);
+                        socketForClient.Close();
+                        //notification.Abort();
+                        //notification.Join();
+                        //notificationTempLabel.Text = "";
+                        //notificationPanel.Visible = false;
+                        Invoke((MethodInvoker)delegate
+                        {
+                            f2.Dispose();
+                        });
+                        MessageBox.Show("File sent to " + targetIP + " " + targetName, "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -297,7 +338,11 @@ namespace File_Transfer
                 }
             }
         }
-
+        void showNotification()
+        {
+            f2 = new NotificationForm(targetName,targetIP);
+            f2.ShowDialog();
+        }
         private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //before existing everything is closed.
@@ -309,6 +354,7 @@ namespace File_Transfer
                     serverThread.Abort();
                     serverThread.Join();
                 }
+                
             }
         }
 
@@ -325,6 +371,7 @@ namespace File_Transfer
                     serverThread.Abort();
                     serverThread.Join();
                 }
+                
                 notificationLabel.ForeColor = Color.Red;
                 notificationLabel.Text = "Application is Offline";
                 infoLabel.Text = "";
@@ -367,6 +414,7 @@ namespace File_Transfer
                     serverThread.Abort();
                     serverThread.Join();
                 }
+               
             }
             Application.Exit();
         }
@@ -377,6 +425,11 @@ namespace File_Transfer
         }
 
         private void onlinePCList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
         {
 
         }

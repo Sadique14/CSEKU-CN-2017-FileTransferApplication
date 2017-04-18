@@ -48,7 +48,10 @@
             this.savePathLabel = new System.Windows.Forms.Label();
             this.ipBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.notificationPanel = new System.Windows.Forms.Panel();
+            this.notificationTempLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            this.notificationPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // onlinePCList
@@ -89,11 +92,11 @@
             this.startButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.startButton.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.startButton.Location = new System.Drawing.Point(18, 2);
+            this.startButton.Location = new System.Drawing.Point(5, -1);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(140, 28);
+            this.startButton.Size = new System.Drawing.Size(139, 36);
             this.startButton.TabIndex = 1;
-            this.startButton.Text = "Find Computers/Start";
+            this.startButton.Text = "Find/Start";
             this.startButton.UseVisualStyleBackColor = false;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
@@ -114,13 +117,13 @@
             // 
             // exitButton
             // 
-            this.exitButton.BackColor = System.Drawing.Color.Crimson;
+            this.exitButton.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exitButton.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.exitButton.Location = new System.Drawing.Point(455, 2);
+            this.exitButton.Location = new System.Drawing.Point(419, -1);
             this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(87, 28);
+            this.exitButton.Size = new System.Drawing.Size(139, 36);
             this.exitButton.TabIndex = 11;
             this.exitButton.Text = "Exit";
             this.exitButton.UseVisualStyleBackColor = false;
@@ -132,9 +135,9 @@
             this.changeSaveLocButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.changeSaveLocButton.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeSaveLocButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.changeSaveLocButton.Location = new System.Drawing.Point(309, 2);
+            this.changeSaveLocButton.Location = new System.Drawing.Point(281, -1);
             this.changeSaveLocButton.Name = "changeSaveLocButton";
-            this.changeSaveLocButton.Size = new System.Drawing.Size(140, 28);
+            this.changeSaveLocButton.Size = new System.Drawing.Size(139, 36);
             this.changeSaveLocButton.TabIndex = 10;
             this.changeSaveLocButton.Text = "Change Save Location";
             this.changeSaveLocButton.UseVisualStyleBackColor = false;
@@ -142,13 +145,13 @@
             // 
             // stopButton
             // 
-            this.stopButton.BackColor = System.Drawing.Color.Crimson;
+            this.stopButton.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stopButton.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stopButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.stopButton.Location = new System.Drawing.Point(163, 2);
+            this.stopButton.Location = new System.Drawing.Point(143, -1);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(140, 28);
+            this.stopButton.Size = new System.Drawing.Size(139, 36);
             this.stopButton.TabIndex = 2;
             this.stopButton.Text = "Stop Application";
             this.stopButton.UseVisualStyleBackColor = false;
@@ -261,17 +264,44 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(119, 333);
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(117, 331);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 13);
+            this.label1.Size = new System.Drawing.Size(93, 13);
             this.label1.TabIndex = 12;
             this.label1.Text = "Insert receiver\'s IP";
+            // 
+            // notificationPanel
+            // 
+            this.notificationPanel.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.notificationPanel.Controls.Add(this.notificationTempLabel);
+            this.notificationPanel.Location = new System.Drawing.Point(15, 147);
+            this.notificationPanel.Name = "notificationPanel";
+            this.notificationPanel.Size = new System.Drawing.Size(524, 90);
+            this.notificationPanel.TabIndex = 13;
+            this.notificationPanel.UseWaitCursor = true;
+            this.notificationPanel.Visible = false;
+            // 
+            // notificationTempLabel
+            // 
+            this.notificationTempLabel.AutoSize = true;
+            this.notificationTempLabel.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.notificationTempLabel.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.notificationTempLabel.Location = new System.Drawing.Point(4, 25);
+            this.notificationTempLabel.Name = "notificationTempLabel";
+            this.notificationTempLabel.Size = new System.Drawing.Size(175, 18);
+            this.notificationTempLabel.TabIndex = 2;
+            this.notificationTempLabel.Text = "Please wait. File Sending to";
+            this.notificationTempLabel.UseWaitCursor = true;
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(559, 379);
+            this.Controls.Add(this.notificationPanel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ipBox);
             this.Controls.Add(this.savePathLabel);
@@ -284,11 +314,14 @@
             this.Controls.Add(this.notificationLabel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.onlinePCList);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "mainForm";
             this.Text = "File Transfer Application - Computer Networks Laboratory Project";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
             this.Load += new System.EventHandler(this.mainForm_Load);
             this.panel1.ResumeLayout(false);
+            this.notificationPanel.ResumeLayout(false);
+            this.notificationPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -315,6 +348,8 @@
         private System.Windows.Forms.Label savePathLabel;
         private System.Windows.Forms.TextBox ipBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel notificationPanel;
+        private System.Windows.Forms.Label notificationTempLabel;
     }
 }
 
